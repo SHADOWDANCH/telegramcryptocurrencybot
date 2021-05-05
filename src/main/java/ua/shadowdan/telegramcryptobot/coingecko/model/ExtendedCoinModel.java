@@ -38,14 +38,14 @@ public class ExtendedCoinModel extends BasicCoinModel {
     public static class CoinMarketData {
         private final Map<String, Float> currentPrice;
         private final Map<String, Float> allTimeHigh;
-        private final Map<String, Float> marketCapitalization;
-        private final Map<String, Float> totalVolume;
+        private final Map<String, Long> marketCapitalization;
+        private final Map<String, Long> totalVolume;
 
         @JsonCreator
         public CoinMarketData(@JsonProperty("current_price") Map<String, Float> currentPrice,
                               @JsonProperty("ath") Map<String, Float> allTimeHigh,
-                              @JsonProperty("market_cap") Map<String, Float> marketCapitalization,
-                              @JsonProperty("total_volume") Map<String, Float> totalVolume) {
+                              @JsonProperty("market_cap") Map<String, Long> marketCapitalization,
+                              @JsonProperty("total_volume") Map<String, Long> totalVolume) {
             this.currentPrice = currentPrice;
             this.allTimeHigh = allTimeHigh;
             this.marketCapitalization = marketCapitalization;
@@ -60,11 +60,11 @@ public class ExtendedCoinModel extends BasicCoinModel {
             return allTimeHigh;
         }
 
-        public Map<String, Float> getMarketCapitalization() {
+        public Map<String, Long> getMarketCapitalization() {
             return marketCapitalization;
         }
 
-        public Map<String, Float> getTotalVolume() {
+        public Map<String, Long> getTotalVolume() {
             return totalVolume;
         }
     }
