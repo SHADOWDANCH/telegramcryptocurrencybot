@@ -13,7 +13,7 @@ import ua.shadowdan.telegramcryptobot.coingecko.model.ExtendedCoinModel;
 
 import java.text.MessageFormat;
 
-public class PriceCommand extends BotCommand {
+public class CoinCommand extends BotCommand {
 
     private static final String CORRECT_RESPONSE_MESSAGE_FORMAT =
             "<b>{0}</b> \n"
@@ -29,8 +29,8 @@ public class PriceCommand extends BotCommand {
 
     private final CoinGeckoApi coinGeckoApi = new CoinGeckoApi();
 
-    public PriceCommand() {
-        super("price", "Get's current price of coin/token");
+    public CoinCommand() {
+        super("coin", "Get's current info about coin");
     }
 
     @Override

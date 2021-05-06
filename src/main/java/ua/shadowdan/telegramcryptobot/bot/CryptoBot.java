@@ -4,12 +4,12 @@ import org.telegram.telegrambots.extensions.bots.commandbot.TelegramLongPollingC
 import org.telegram.telegrambots.extensions.bots.commandbot.commands.helpCommand.HelpCommand;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import ua.shadowdan.telegramcryptobot.Constants;
-import ua.shadowdan.telegramcryptobot.command.PriceCommand;
+import ua.shadowdan.telegramcryptobot.command.CoinCommand;
 
 public class CryptoBot extends TelegramLongPollingCommandBot {
 
     public CryptoBot() {
-        register(new PriceCommand());
+        register(new CoinCommand());
         register(new HelpCommand());
     }
 
