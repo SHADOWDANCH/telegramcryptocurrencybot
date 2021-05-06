@@ -16,11 +16,11 @@ import java.text.MessageFormat;
 public class PriceCommand extends BotCommand {
 
     private static final String CORRECT_RESPONSE_MESSAGE_FORMAT =
-            "<b>{1}</b> \n\n"
-            + "<u>Current price:</u> {2}$\n"
-            + "<u>Market cap:</u> {3}$\n"
-            + "<u>Total volume:</u> {4}$\n"
-            + "<u>All Time High:</u> {5}$\n";
+            "<b>{0}</b> \n\n"
+            + "<u>Current price:</u> {1}$\n"
+            + "<u>Market cap:</u> {2}$\n"
+            + "<u>Total volume:</u> {3}$\n"
+            + "<u>All Time High:</u> {4}$\n";
 
     private final CoinGeckoApi coinGeckoApi = new CoinGeckoApi();
 
