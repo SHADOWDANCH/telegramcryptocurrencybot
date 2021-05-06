@@ -60,8 +60,8 @@ public class CoinCommand extends BotCommand {
                             marketData.getMarketCapitalization().get("usd"),
                             marketData.getTotalVolume().get("usd"),
                             marketData.getAllTimeHigh().get("usd"),
-                            marketData.getPriceChangePercent7d(),
                             marketData.getPriceChangePercent24h(),
+                            marketData.getPriceChangePercent7d(),
                             marketData.getPriceChangePercent1y())
             );
         }
