@@ -16,11 +16,16 @@ import java.text.MessageFormat;
 public class PriceCommand extends BotCommand {
 
     private static final String CORRECT_RESPONSE_MESSAGE_FORMAT =
-            "<b>{0}</b> \n\n"
+            "<b>{0}</b> \n"
+            + "\n"
             + "<u>Current price:</u> {1}$\n"
             + "<u>Market cap:</u> {2}$\n"
             + "<u>Total volume:</u> {3}$\n"
-            + "<u>All Time High:</u> {4}$\n";
+            + "<u>All Time High:</u> {4}$\n"
+            + "\n"
+            + "<u>Price change (24 hours):</u> {5}%\n"
+            + "<u>Price change (7 days):</u> {6}%\n"
+            + "<u>Price change (1 year):</u> {7}%\n";
 
     private final CoinGeckoApi coinGeckoApi = new CoinGeckoApi();
 
@@ -54,7 +59,10 @@ public class PriceCommand extends BotCommand {
                             marketData.getCurrentPrice().get("usd"),
                             marketData.getMarketCapitalization().get("usd"),
                             marketData.getTotalVolume().get("usd"),
-                            marketData.getAllTimeHigh().get("usd"))
+                            marketData.getAllTimeHigh().get("usd"),
+                            marketData.getPriceChangePercent7d(),
+                            marketData.getPriceChangePercent24h(),
+                            marketData.getPriceChangePercent1y())
             );
         }
 

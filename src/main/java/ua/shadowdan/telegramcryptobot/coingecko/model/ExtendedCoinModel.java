@@ -40,16 +40,25 @@ public class ExtendedCoinModel extends BasicCoinModel {
         private final Map<String, Float> allTimeHigh;
         private final Map<String, Long> marketCapitalization;
         private final Map<String, Long> totalVolume;
+        private final float priceChangePercent24h;
+        private final float priceChangePercent7d;
+        private final float priceChangePercent1y;
 
         @JsonCreator
         public CoinMarketData(@JsonProperty("current_price") Map<String, Float> currentPrice,
                               @JsonProperty("ath") Map<String, Float> allTimeHigh,
                               @JsonProperty("market_cap") Map<String, Long> marketCapitalization,
-                              @JsonProperty("total_volume") Map<String, Long> totalVolume) {
+                              @JsonProperty("total_volume") Map<String, Long> totalVolume,
+                              @JsonProperty("price_change_percentage_24h") float priceChangePercent24h,
+                              @JsonProperty("price_change_percentage_7d") float priceChangePercent7d,
+                              @JsonProperty("price_change_percentage_1y") float priceChangePercent1y) {
             this.currentPrice = currentPrice;
             this.allTimeHigh = allTimeHigh;
             this.marketCapitalization = marketCapitalization;
             this.totalVolume = totalVolume;
+            this.priceChangePercent24h = priceChangePercent24h;
+            this.priceChangePercent7d = priceChangePercent7d;
+            this.priceChangePercent1y = priceChangePercent1y;
         }
 
         public Map<String, Float> getCurrentPrice() {
@@ -66,6 +75,18 @@ public class ExtendedCoinModel extends BasicCoinModel {
 
         public Map<String, Long> getTotalVolume() {
             return totalVolume;
+        }
+
+        public float getPriceChangePercent24h() {
+            return priceChangePercent24h;
+        }
+
+        public float getPriceChangePercent7d() {
+            return priceChangePercent7d;
+        }
+
+        public float getPriceChangePercent1y() {
+            return priceChangePercent1y;
         }
     }
 }
