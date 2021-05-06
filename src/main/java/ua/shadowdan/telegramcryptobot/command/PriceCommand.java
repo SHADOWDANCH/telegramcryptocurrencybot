@@ -11,7 +11,16 @@ import ua.shadowdan.telegramcryptobot.coingecko.CoinGeckoApi;
 import ua.shadowdan.telegramcryptobot.coingecko.model.BasicCoinModel;
 import ua.shadowdan.telegramcryptobot.coingecko.model.ExtendedCoinModel;
 
+import java.text.MessageFormat;
+
 public class PriceCommand extends BotCommand {
+
+    private static final String CORRECT_RESPONSE_MESSAGE_FORMAT =
+            "<b>{1}</b> \n\n"
+            + "<u>Current price:</u> {2}$\n"
+            + "<u>Market cap:</u> {3}$\n"
+            + "<u>Total volume:</u> {4}$\n"
+            + "<u>All Time High:</u> {5}$\n";
 
     private final CoinGeckoApi coinGeckoApi = new CoinGeckoApi();
 
@@ -39,11 +48,13 @@ public class PriceCommand extends BotCommand {
         } else {
             final ExtendedCoinModel.CoinMarketData marketData = coinGeckoApi.getCoinData(coinBySymbol.getId()).getMarketData();
             answer.setParseMode("HTML");
-            answer.setText( "<b>" + coinBySymbol.getName() + "</b> \n\n"
-                    + "<u>Current price:</u>  " + marketData.getCurrentPrice().get("usd") + "$\n"
-                    + "<u>Market cap:</u>  " + marketData.getMarketCapitalization().get("usd") + "$\n"
-                    + "<u>Total volume:</u>  " + marketData.getTotalVolume().get("usd") + "$\n"
-                    + "<u>All Time High:</u>  " + marketData.getAllTimeHigh().get("usd") + "$\n"
+            answer.setText(
+                    MessageFormat.format(CORRECT_RESPONSE_MESSAGE_FORMAT,
+                            coinBySymbol.getName(),
+                            marketData.getCurrentPrice().get("usd"),
+                            marketData.getMarketCapitalization().get("usd"),
+                            marketData.getTotalVolume().get("usd"),
+                            marketData.getAllTimeHigh().get("usd"))
             );
         }
 
