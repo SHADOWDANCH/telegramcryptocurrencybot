@@ -23,9 +23,9 @@ public class CoinCommand extends BotCommand {
             + "<u>Total volume:</u> {3}$\n"
             + "<u>All Time High:</u> {4}$\n"
             + "\n"
-            + "<u>Price change (24 hours):</u> {5,number,#.#%}\n"
-            + "<u>Price change (7 days):</u> {6,number,#.#%}\n"
-            + "<u>Price change (1 year):</u> {7,number,#.#%}\n";
+            + "<u>Price change (24 hours):</u> {5,number,#.##%}\n"
+            + "<u>Price change (7 days):</u> {6,number,#.##%}\n"
+            + "<u>Price change (1 year):</u> {7,number,#.##%#}\n";
 
     private final CoinGeckoApi coinGeckoApi = new CoinGeckoApi();
 
@@ -39,7 +39,7 @@ public class CoinCommand extends BotCommand {
         if (arguments.length < 1) {
             final SendMessage answer = new SendMessage();
             answer.setChatId(chat.getId().toString());
-            answer.setText("Use /price <coin symbol>");
+            answer.setText("Use /" + getCommandIdentifier() + " <coin symbol>");
             absSender.execute(answer);
             return;
         }
