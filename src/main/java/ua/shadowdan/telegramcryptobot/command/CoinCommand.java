@@ -7,6 +7,7 @@ import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.bots.AbsSender;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import ua.shadowdan.telegramcryptobot.Constants;
 import ua.shadowdan.telegramcryptobot.coingecko.CoinGeckoApi;
 import ua.shadowdan.telegramcryptobot.coingecko.model.BasicCoinModel;
 import ua.shadowdan.telegramcryptobot.coingecko.model.ExtendedCoinModel;
@@ -18,14 +19,14 @@ public class CoinCommand extends BotCommand {
     private static final String CORRECT_RESPONSE_MESSAGE_FORMAT =
             "<b>{0}</b> \n"
             + "\n"
-            + "<u>Current price:</u> {1}$\n"
-            + "<u>Market cap:</u> {2}$\n"
-            + "<u>Total volume:</u> {3}$\n"
-            + "<u>All Time High:</u> {4}$\n"
+            + "<u>\uD83D\uDCC8 Current price:</u> {1}$\n"
+            + "<u>\uD83D\uDD95 Market cap:</u> {2}$\n"
+            + "<u>\uD83D\uDD95 Total volume:</u> {3}$\n"
+            + "<u>\uD83D\uDCAF All Time High:</u> {4}$\n"
             + "\n"
-            + "<u>Price change (24 hours):</u> {5,number,#.#}%\n"
-            + "<u>Price change (7 days):</u> {6,number,#.#}%\n"
-            + "<u>Price change (1 year):</u> {7,number,#.#}%\n";
+            + "<u>{5} Price change (24 hours):</u> {6,number,#.#}%\n"
+            + "<u>{7} Price change (7 days):</u> {8,number,#.#}%\n"
+            + "<u>{9} Price change (1 year):</u> {10,number,#.#}%\n";
 
     private final CoinGeckoApi coinGeckoApi = new CoinGeckoApi();
 
@@ -52,6 +53,10 @@ public class CoinCommand extends BotCommand {
             answer.setText("Coin does not exists.");
         } else {
             final ExtendedCoinModel.CoinMarketData marketData = coinGeckoApi.getCoinData(coinBySymbol.getId()).getMarketData();
+            final float priceChangePercent24h = marketData.getPriceChangePercent24h();
+            final float priceChangePercent7d = marketData.getPriceChangePercent7d();
+            final float priceChangePercent1y = marketData.getPriceChangePercent1y();
+
             answer.setParseMode("HTML");
             answer.setText(
                     MessageFormat.format(CORRECT_RESPONSE_MESSAGE_FORMAT,
@@ -60,12 +65,19 @@ public class CoinCommand extends BotCommand {
                             marketData.getMarketCapitalization().get("usd"),
                             marketData.getTotalVolume().get("usd"),
                             marketData.getAllTimeHigh().get("usd"),
-                            marketData.getPriceChangePercent24h(),
-                            marketData.getPriceChangePercent7d(),
-                            marketData.getPriceChangePercent1y())
+                            getPriceChangeEmoji(priceChangePercent24h),
+                            priceChangePercent24h,
+                            getPriceChangeEmoji(priceChangePercent7d),
+                            priceChangePercent7d,
+                            getPriceChangeEmoji(priceChangePercent1y),
+                            priceChangePercent1y)
             );
         }
 
         absSender.execute(answer);
+    }
+
+    private static String getPriceChangeEmoji(float price) {
+        return price >= 0 ? Constants.PRICE_UP_EMOJI : Constants.PRICE_DOWN_EMOJI;
     }
 }
