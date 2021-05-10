@@ -23,9 +23,9 @@ public class CoinCommand extends BotCommand {
             + "<u>Total volume:</u> {3}$\n"
             + "<u>All Time High:</u> {4}$\n"
             + "\n"
-            + "<u>Price change (24 hours):</u> {5,number,#.##%}\n"
-            + "<u>Price change (7 days):</u> {6,number,#.##%}\n"
-            + "<u>Price change (1 year):</u> {7,number,#.##%#}\n";
+            + "<u>Price change (24 hours):</u> {5,number,#.#}%\n"
+            + "<u>Price change (7 days):</u> {6,number,#.#}%\n"
+            + "<u>Price change (1 year):</u> {7,number,#.#}%\n";
 
     private final CoinGeckoApi coinGeckoApi = new CoinGeckoApi();
 
