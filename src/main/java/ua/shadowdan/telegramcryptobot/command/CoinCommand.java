@@ -19,16 +19,16 @@ public class CoinCommand extends BotCommand {
     private static final String CORRECT_RESPONSE_MESSAGE_FORMAT =
             "<b>{0}</b> \n"
             + "\n"
-            + "<u>\uD83D\uDCC8 Current price:</u> {1}$\n"
+            + "<u>\uD83D\uDCC8 Current price:</u> {1,number,#.#########}$\n"
             + "<u>\uD83D\uDD95 Market cap:</u> {2}$\n"
             + "<u>\uD83D\uDD95 Total volume:</u> {3}$\n"
-            + "<u>\uD83D\uDCAF All Time High:</u> {4}$\n"
+            + "<u>\uD83D\uDCAF All Time High:</u> {4,number,#.#########}$\n"
             + "\n"
             + "<u>{5} Price change (24 hours):</u> {6,number,#.#}%\n"
             + "<u>{7} Price change (7 days):</u> {8,number,#.#}%\n"
             + "<u>{9} Price change (1 year):</u> {10,number,#.#}%\n";
 
-    private final CoinGeckoApi coinGeckoApi = new CoinGeckoApi();
+    private static final CoinGeckoApi coinGeckoApi = new CoinGeckoApi();
 
     public CoinCommand() {
         super("coin", "Get's current info about coin");
