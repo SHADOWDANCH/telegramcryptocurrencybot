@@ -20,8 +20,8 @@ public class CoinCommand extends BotCommand {
             "<b>{0}</b> \n"
             + "\n"
             + "<u>\uD83D\uDCC8 Current price:</u> {1,number,#.#########}$\n"
-            + "<u>\uD83D\uDD95 Market cap:</u> {2}$\n"
-            + "<u>\uD83D\uDD95 Total volume:</u> {3}$\n"
+            + "<u>\uD83D\uDCCA Market cap:</u> {2}$\n"
+            + "<u>\uD83C\uDFC5 Total volume:</u> {3}$\n"
             + "<u>\uD83D\uDCAF All Time High:</u> {4,number,#.#########}$\n"
             + "\n"
             + "<u>{5} Price change (24 hours):</u> {6,number,#.#}%\n"
@@ -44,37 +44,42 @@ public class CoinCommand extends BotCommand {
             absSender.execute(answer);
             return;
         }
-        final String coinSymbol = arguments[0];
-        final BasicCoinModel coinBySymbol = coinGeckoApi.getCoinBySymbol(coinSymbol);
+        for (int i = 0; i < arguments.length && i < 3; i ++) {
+            final String coinIdentifier = arguments[i];
+            BasicCoinModel coinBySymbol;
+            if ((coinBySymbol = coinGeckoApi.getCoinBySymbol(coinIdentifier)) == null) {
+                coinBySymbol = coinGeckoApi.getCoinByName(coinIdentifier);
+            }
 
-        final SendMessage answer = new SendMessage();
-        answer.setChatId(chat.getId().toString());
-        if (coinBySymbol == null) {
-            answer.setText("Coin does not exists.");
-        } else {
-            final ExtendedCoinModel.CoinMarketData marketData = coinGeckoApi.getCoinData(coinBySymbol.getId()).getMarketData();
-            final float priceChangePercent24h = marketData.getPriceChangePercent24h();
-            final float priceChangePercent7d = marketData.getPriceChangePercent7d();
-            final float priceChangePercent1y = marketData.getPriceChangePercent1y();
+            final SendMessage answer = new SendMessage();
+            answer.setChatId(chat.getId().toString());
+            if (coinBySymbol == null) {
+                answer.setText("Coin does not exists.");
+            } else {
+                final ExtendedCoinModel.CoinMarketData marketData = coinGeckoApi.getCoinData(coinBySymbol.getId()).getMarketData();
+                final float priceChangePercent24h = marketData.getPriceChangePercent24h();
+                final float priceChangePercent7d = marketData.getPriceChangePercent7d();
+                final float priceChangePercent1y = marketData.getPriceChangePercent1y();
 
-            answer.setParseMode("HTML");
-            answer.setText(
-                    MessageFormat.format(CORRECT_RESPONSE_MESSAGE_FORMAT,
-                            coinBySymbol.getName(),
-                            marketData.getCurrentPrice().get("usd"),
-                            marketData.getMarketCapitalization().get("usd"),
-                            marketData.getTotalVolume().get("usd"),
-                            marketData.getAllTimeHigh().get("usd"),
-                            getPriceChangeEmoji(priceChangePercent24h),
-                            priceChangePercent24h,
-                            getPriceChangeEmoji(priceChangePercent7d),
-                            priceChangePercent7d,
-                            getPriceChangeEmoji(priceChangePercent1y),
-                            priceChangePercent1y)
-            );
+                answer.setParseMode("HTML");
+                answer.setText(
+                        MessageFormat.format(CORRECT_RESPONSE_MESSAGE_FORMAT,
+                                coinBySymbol.getName(),
+                                marketData.getCurrentPrice().get("usd"),
+                                marketData.getMarketCapitalization().get("usd"),
+                                marketData.getTotalVolume().get("usd"),
+                                marketData.getAllTimeHigh().get("usd"),
+                                getPriceChangeEmoji(priceChangePercent24h),
+                                priceChangePercent24h,
+                                getPriceChangeEmoji(priceChangePercent7d),
+                                priceChangePercent7d,
+                                getPriceChangeEmoji(priceChangePercent1y),
+                                priceChangePercent1y)
+                );
+            }
+
+            absSender.execute(answer);
         }
-
-        absSender.execute(answer);
     }
 
     private static String getPriceChangeEmoji(float price) {

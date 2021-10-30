@@ -18,37 +18,43 @@ public class CoinGeckoApi {
     private static final String COIN_DATA_URL = "https://api.coingecko.com/api/v3/coins/%s?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false";
 
     private final Map<String, BasicCoinModel> symbolCoinCache = new HashMap<>();
-    private long lastSymbolCoinMapRefresh = 0L;
+    private final Map<String, BasicCoinModel> nameCoinCache = new HashMap<>();
+    private long lastCoinsCacheRefresh = 0L;
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    public CoinGeckoApi() {
-        refreshCache();
-    }
-
     public BasicCoinModel getCoinBySymbol(String symbol) {
-        if ((System.currentTimeMillis() - lastSymbolCoinMapRefresh) > COINS_LIST_CACHE_LIFETIME) {
-            refreshCache();
-        }
+        refreshCache();
 
         return symbolCoinCache.get(symbol);
     }
 
+    public BasicCoinModel getCoinByName(String name) {
+        refreshCache();
+
+        return nameCoinCache.get(name);
+    }
+
     @SneakyThrows
     public ExtendedCoinModel getCoinData(String id) {
-        // TODO: should cache
+        // FIXME: maybe should be cached
         return objectMapper.readValue(new URL(String.format(COIN_DATA_URL, id)), ExtendedCoinModel.class);
     }
 
     @SneakyThrows
     private void refreshCache() {
+        if ((System.currentTimeMillis() - lastCoinsCacheRefresh) < COINS_LIST_CACHE_LIFETIME) {
+            return;
+        }
+
         final BasicCoinModel[] coins = objectMapper.readValue(new URL(COINS_LIST_URL), BasicCoinModel[].class);
 
         for (BasicCoinModel coin : coins) {
             symbolCoinCache.put(coin.getSymbol(), coin);
+            nameCoinCache.put(coin.getName(), coin);
         }
 
-        lastSymbolCoinMapRefresh = System.currentTimeMillis();
+        lastCoinsCacheRefresh = System.currentTimeMillis();
         System.out.println("Cache refreshed!");
     }
 }

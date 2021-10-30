@@ -17,13 +17,15 @@ public class Main {
         TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
         telegramBotsApi.registerBot(new CryptoBot());
 
-        new Timer().schedule(new TimerTask() {
-            @Override
-            public void run() {
-                final int statusCode = getHttpConnectionStatus("https://www.google.com");
-                System.out.println("Ping OK! " + statusCode);
-            }
-        }, 0L, TimeUnit.MINUTES.toMillis(10L));
+        if (System.getProperty("heroku.bypass.sleep") != null) {
+            new Timer().schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    final int statusCode = getHttpConnectionStatus("https://www.google.com");
+                    System.out.println("Ping OK! " + statusCode);
+                }
+            }, 0L, TimeUnit.MINUTES.toMillis(10L));
+        }
     }
 
     private static int getHttpConnectionStatus(String url) {
