@@ -28,10 +28,12 @@ public class CoinCommand extends BotCommand {
             + "<u>{7} Price change (7 days):</u> {8,number,#.#}%\n"
             + "<u>{9} Price change (1 year):</u> {10,number,#.#}%\n";
 
-    private static final CoinGeckoApi coinGeckoApi = new CoinGeckoApi();
+    private final CoinGeckoApi coinGeckoApi;
 
-    public CoinCommand() {
+    public CoinCommand(CoinGeckoApi coinGeckoApi) {
         super("coin", "Get's current info about coin");
+
+        this.coinGeckoApi = coinGeckoApi;
     }
 
     @Override
