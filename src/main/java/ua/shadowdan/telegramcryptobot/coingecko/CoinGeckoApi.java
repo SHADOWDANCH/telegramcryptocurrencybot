@@ -47,15 +47,14 @@ public class CoinGeckoApi {
             return;
         }
 
+        symbolCoinCache.clear();
+        nameCoinCache.clear();
+
         final BasicCoinModel[] coins = objectMapper.readValue(new URL(COINS_LIST_URL), BasicCoinModel[].class);
 
         for (BasicCoinModel coin : coins) {
-            // hack for ignoring solana wormhole bridges
-            if (coin.getName().endsWith("(Wormhole)")) { // FIXME: somehow handle all coins with same symbols
-                continue;
-            }
-            symbolCoinCache.put(coin.getSymbol(), coin);
-            nameCoinCache.put(coin.getName(), coin);
+            symbolCoinCache.putIfAbsent(coin.getSymbol(), coin);
+            nameCoinCache.putIfAbsent(coin.getName(), coin);
         }
 
         lastCoinsCacheRefresh = System.currentTimeMillis();
